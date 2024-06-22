@@ -54,7 +54,7 @@ export default function usePostsApi() {
     onMounted(async () => {
         try {
             const limit = 100
-            const response = await axios.get(`http://dummyjson.com/users?limit=${limit}`)
+            const response = await axios.get(`https://dummyjson.com/users?limit=${limit}`)
             users.value = response.data.users;
      
             updateVisiblePages();
