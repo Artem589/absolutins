@@ -103,9 +103,11 @@ onMounted(() => {
     border: none;
   }
 
-  @media screen and (max-width: 1380px) {
+  @media screen and (max-width: 1024px) {
     &__modal-btn {
-      display: none;
+      top: 10px;
+      right: 50%;
+      transform: translateX(50%);
     }
   }
 }
