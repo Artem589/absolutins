@@ -6,7 +6,9 @@ interface Props {
   displayedItems: User[]
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  displayedItems: () => []
+});
 </script>
 
 <template>
@@ -26,12 +28,12 @@ const props = defineProps<Props>();
       <tbody>
       <tr v-for="(item, index) in displayedItems" :key="index">
         <td data-title="Id" class="data-table__table-hover">{{ item.id }}</td>
-        <td data-title="Имя"  class="data-table__table-hover">{{ item.firstName + ' ' + item.lastName }}</td>
-        <td data-title="Компания"  class="data-table__table-hover">{{ item.company.name }}</td>
-        <td data-title="Должность"  class="data-table__table-hover">{{ item.company.title }}</td>
-        <td data-title="Телефон"  class="data-table__table-hover">{{ item.phone }}</td>
-        <td data-title="Дата рождения"  class="data-table__table-hover">{{ formatDateShort(item.birthDate) }}</td>
-        <td data-title="Возраст"  class="data-table__table-hover">{{ item.age }}</td>
+        <td data-title="Имя" class="data-table__table-hover">{{ item.firstName + ' ' + item.lastName }}</td>
+        <td data-title="Компания" class="data-table__table-hover">{{ item.company.name }}</td>
+        <td data-title="Должность" class="data-table__table-hover">{{ item.company.title }}</td>
+        <td data-title="Телефон" class="data-table__table-hover">{{ item.phone }}</td>
+        <td data-title="Дата рождения" class="data-table__table-hover">{{ formatDateShort(item.birthDate) }}</td>
+        <td data-title="Возраст" class="data-table__table-hover">{{ item.age }}</td>
       </tr>
       </tbody>
     </table>
@@ -122,21 +124,21 @@ const props = defineProps<Props>();
     }
     & tr {
       display: block;
-      
+
       &:not(:first-child) {
         border-top: 1px solid #15a88a;
       }
     }
-    
-   & td {
-     display: flex;
-     justify-content: space-between;
-   }
+
+    & td {
+      display: flex;
+      justify-content: space-between;
+    }
     & td::before {
       content: attr(data-title) ": ";
       font-weight: 700;
     }
-    
+
     &__table-hover:not(:first-child) {
       border-left: none;
     }

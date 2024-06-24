@@ -11,6 +11,12 @@ export default function usePostsApi() {
 
     const totalPages = computed(() => Math.ceil(users.value.length / itemsPerPage.value));
 
+    const displayedItems = computed(() => {
+        const startIndex = (currentPage.value - 1) * itemsPerPage.value;
+        const endIndex = startIndex + itemsPerPage.value;
+ 
+        return users.value.slice(startIndex, endIndex);
+    });
 
     const updateVisiblePages = () => {
         visiblePages.value = [];
@@ -36,32 +42,23 @@ export default function usePostsApi() {
         }
     };
 
-
-    const displayedItems = computed(() => {
-        const startIndex = (currentPage.value - 1) * itemsPerPage.value;
-        const endIndex = startIndex + itemsPerPage.value;
-
-        return users.value.slice(startIndex, endIndex);
-    });
-
-
     const goToPage = (page: number) => {
         currentPage.value = page;
         updateVisiblePages();
     };
 
 
-    onMounted(async () => {
+    const getDataUsers = async () => {
         try {
             const limit = 100
             const response = await axios.get(`https://dummyjson.com/users?limit=${limit}`)
             users.value = response.data.users;
-     
+
             updateVisiblePages();
         } catch (error) {
             console.error('Ошибка загрузки данных:', error);
         }
-    });
+    };
 
     return {
         users,
@@ -72,6 +69,7 @@ export default function usePostsApi() {
         displayedItems,
         maxVisiblePages,
         goToPage,
+        getDataUsers,
         updateVisiblePages
     };
 }

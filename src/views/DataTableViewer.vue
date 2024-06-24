@@ -1,11 +1,10 @@
 ﻿<script setup lang="ts">
 import {useRouter, useRoute} from 'vue-router';
-import {ref, watch} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import usePostsApi from '@/composables/usePostsApi';
 import BaseModal from "@/components/BaseModal.vue";
 import BasePagination from "@/components/BasePagination.vue";
 import BaseDataTable from "@/components/BaseDataTable.vue";
-
 
 interface Settings {
   itemsPerPage: number;
@@ -22,6 +21,7 @@ const {
   displayedItems,
   itemsPerPage,
   maxVisiblePages,
+  getDataUsers,
   updateVisiblePages,
 } = usePostsApi();
 
@@ -46,10 +46,19 @@ watch(
     () => route.query.page,
     (newPage) => {
       if (typeof newPage === "string") {
-        currentPage.value = parseInt(newPage, 10);
+        const page = parseInt(newPage, 10);
+        if (page < 1 || page > totalPages.value) {
+          router.replace('/')
+        } else {
+          currentPage.value = page
+        }
       }
     }
 );
+
+onMounted(() => {
+  getDataUsers()
+})
 </script>
 
 <template>
@@ -60,7 +69,6 @@ watch(
                @save-settings="handleSaveSettings"
                :itemsPerPage="itemsPerPage"
                :maxVisiblePages="maxVisiblePages"
-
     />
 
     <BaseDataTable :displayed-items="displayedItems"/>
